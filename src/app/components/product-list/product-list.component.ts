@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -12,7 +13,16 @@ export class ProductListComponent implements OnInit{
 
   products: Product[] = [];
   currentCategoryId: number = 1;
+  previousCategoryId: number= 1;
   searchMode: boolean= false;
+
+  //properties for pagination
+  pageNumber: number= 1;
+  pageSize: number= 5;
+  totalElements: number =0;
+
+
+  previousKeyword: string = "";
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
@@ -38,11 +48,21 @@ export class ProductListComponent implements OnInit{
     handleSearchProducts() {
       const keywordInput: string = this.route.snapshot.paramMap.get('keyword')!;
 
+      //if  we have a different keyword than the previous
+      //then set pagenumber to 1
+      if(this.previousKeyword != keywordInput){
+        this.pageNumber = 1;
+      }
+
+      this.previousKeyword = keywordInput;
+      console.log(`keyword=${keywordInput}, pageNumber=${this.pageNumber}`);
+
       //now search for the products using the keyword
-      this.productService.searchProducts(keywordInput).subscribe(
-        data=> {
-          this.products = data;
-        })
+      this.productService.searchProductPaginate(this.pageNumber -1, 
+                            this.pageSize, 
+                            keywordInput).subscribe(this.processResult());
+                                          
+        
     }
 
   
@@ -54,12 +74,44 @@ export class ProductListComponent implements OnInit{
         //category id unavailable .. default to category id 1
         this.currentCategoryId = 1;
       }
+      
+      //handle pagination
+      //check if there is a different category than previous
+      //Angular reuses a component if it is currently being viewed
+      // if we have a different category id than previous
+      //then reset page number to 1
+
+      if(this.previousCategoryId != this.currentCategoryId){
+        this.pageNumber = 1;
+      }
+
+      this.previousCategoryId = this.currentCategoryId;
+      console.log(`currentCategoryId=${this.currentCategoryId}, pageNumber=${this.pageNumber}`);
+
       //get the products for the given category id
-      this.productService.getProductList(this.currentCategoryId).subscribe(
-        data => {
-          this.products = data;
+      this.productService.getProductListPaginate(this.pageNumber - 1,
+                                                  this.pageSize,
+                                                  this.currentCategoryId)
+                                                  .subscribe(
+                                                   this.processResult()
+                                                  );
+      }
+
+      updatePageSize(pageSize: string){
+        this.pageSize = +pageSize;
+        this.pageSize = 1;
+        this.listProducts();
+      }
+
+      processResult(){
+        return (data: any) => {
+          this.products = data._embedded.products;
+          this.pageNumber = data.page.number + 1;
+          this.pageSize = data.page.size;
+          this.totalElements = data.page.totalElements;
         }
-    )
+      }
+    
   }
-}
+
     

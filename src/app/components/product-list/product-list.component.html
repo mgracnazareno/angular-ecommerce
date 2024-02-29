@@ -20,6 +20,43 @@
                     No product found.
                 </div>
             </div>
+
+            <!-- begin footer-->
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-9" style="padding-left: 30%">
+                                <ngb-pagination [(page)]="pageNumber" 
+                                                [pageSize]="pageSize"
+                                                [collectionSize]="totalElements" 
+                                                [maxSize]="5"
+                                                [boundaryLinks]="true"
+                                                (pageChange)="listProducts">
+                                    
+                                </ngb-pagination>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        
+                        <!-- pagination where user can select the number of products to display-->
+                        <div class="col-md-4 mt-2" style="text-align: right;">
+                            <span class="mr-2">Page Size</span>
+                            <select #pageSelect (change)="updatePageSize(pageSelect.value)">
+                                <option>2</option>
+                                <option selected="true">5</option>
+                                <option >10</option>
+                                <option >20</option>
+                                <option >50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+            <!-- end footer -->
+
         </div>
     </div>
 </div>
