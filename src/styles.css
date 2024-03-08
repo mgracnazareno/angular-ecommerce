@@ -99,6 +99,9 @@ a,a:hover{
     -moz-transition:all .3s ease;
     transition:all .3s ease
 }
+p, a {
+    font-family: "Roboto", sans-serif; ;
+}
 
 /*Layout Css*/
 .section-content-p35{
@@ -139,6 +142,7 @@ aside.menu-sidebar.d-none.d-lg-block.clr{
 
 .header-desktop{
     background:#0da8e4;
+    /* background: #004225; */
     -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.1);
     -moz-box-shadow:0 2px 5px 0 rgba(0,0,0,.1);
     box-shadow:0 2px 5px 0 rgba(0,0,0,.1);
@@ -218,7 +222,7 @@ section{
 }
 
 .au-input-xl{
-    min-width:935px
+    min-width:500px
 }
 
 input.au-input.au-input-xl{
@@ -518,7 +522,7 @@ input.au-input.au-input-xl{
     background:#fff
 }
 .main-content.page-m{
-    padding:10% 15%!important
+    padding:10% 30% 10% 5%;
 }
 
 /* 
@@ -979,15 +983,15 @@ footer ul li{
         margin-left:15px
     }
     .footer-pagination{
-        text-align:center
+        text-align:center;
     }
     .product-box{
-        text-align:centerg
+        text-align:center;
     }
     .page-container{
         position:relative;
         top:66px;
-        padding-left:0
+        padding-left:0;
     }
     .au-btn-submit{
         position:relative;
@@ -998,7 +1002,7 @@ footer ul li{
         -webkit-border-radius:3px;
         -moz-border-radius:3px;
         border-radius:0;
-        background:#205b8d
+        background:#205b8d;
     }
     input.au-input.au-input-xl{
         border-radius:0!important;
